@@ -1,20 +1,20 @@
 <p id="notice"><%= notice %></p>
-<h1>Show Task Page</h1>
+<h1>タスク詳細ページ</h1>
 
 <p>
-  <strong>Title:</strong>
+  <strong>タイトル:</strong>
   <%= @task.title %>
 </p>
 
 <p>
-  <strong>Content:</strong>
+  <strong>内容:</strong>
   <%= @task.content %>
 </p>
 
 <p>
-  <strong>Created_at:</strong>
+  <strong>作成日時:</strong>
   <%= @task.created_at %>
 </p>
 
-<%= link_to 'Edit', edit_task_path(@task), id: "edit-task" %> |
-<%= link_to 'Back', tasks_path, id: "back" %>
+<%= link_to '編集', edit_task_path(@task), id: "edit-task" %> |
+<%= link_to '戻る', tasks_path, id: "back" %>

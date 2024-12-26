@@ -36,7 +36,7 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     if @task.update(task_params)
       flash[:notice] = "Task was successfully updated."
-      redirect_to tasks_path
+      redirect_to task_path(@task)
     else
       flash[:notice] = "Title can't be blank."
       render :edit

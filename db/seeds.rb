@@ -5,3 +5,13 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+49.times do |n|
+  title = Faker::Games::Pokemon.name
+  content = Faker::Games::Pokemon.move
+
+  Task.create(
+    title: title,
+    content: content
+  )
+end

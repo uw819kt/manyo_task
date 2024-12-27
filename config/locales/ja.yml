@@ -1,0 +1,57 @@
+ja:
+  navigation:
+    Tasks Index: タスク一覧
+    New Task: タスクを登録する
+  index:
+    Tasks Index Page: タスク一覧ページ
+    New Task Page: タスク登録ページ
+    Show Task Page: タスク詳細ページ
+    Edit Task Page: タスク編集ページ
+    Title: タイトル
+    Content: 内容
+    Created_at: 作成日時
+  activerecord:
+    models:
+      task: タスク
+    attributes:
+      task:
+        title: タイトル
+        content: 内容
+        created_at: 作成日時
+      user:
+        name: 名前
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      blank: を入力してください
+      invalid: が無効です
+      confirmation: と%{attribute}の入力が一致しません
+  helpers:
+    submit:
+      create: 登録する
+      update: 更新する
+  common:
+    new: 新規作成
+    Show: 詳細
+    Edit: 編集
+    Destroy: 削除
+    Back: 戻る
+    Are you sure?: 本当に削除してもよろしいですか？
+  tasks:
+    index:
+      title: タスク一覧ページ
+    new:
+      title: タスク登録ページ
+    edit:
+      title: タスク編集ページ
+    show:
+      title: タスク詳細ページ
+    create:
+      Task was successfully created.: タスクを登録しました
+    update:
+      Task was successfully updated.: タスクを更新しました
+    destroy:
+      Task was successfully destroyed.: タスクを削除しました

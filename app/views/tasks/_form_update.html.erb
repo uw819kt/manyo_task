@@ -1,7 +1,7 @@
 <%= form_with(model: task, local: true) do |form| %>
   <% if task.errors.any? %>
     <div id="error_explanation">
-      <p><%= pluralize(task.errors.count, "件") %>のエラーが発生しました</p>
+      <p><%= pluralize(task.errors.count,"件") %>エラーが発生しました</p>
 
       <ul>
         <% task.errors.each do |error| %>
@@ -21,7 +21,7 @@
     <%= form.text_area :content %>
   </div>
 
-  <div id="update-task">
-    <%= form.submit %>
+  <div>
+    <%= form.submit id: "update-task" %>
   </div>
 <% end %>

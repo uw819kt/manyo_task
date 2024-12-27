@@ -3,4 +3,4 @@ class Task < ApplicationRecord
   validates :content, presence: true
 end
 
-# 未入力時のメッセージ表示未
+

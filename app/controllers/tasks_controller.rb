@@ -3,7 +3,7 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -23,19 +23,19 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
-      flash[:notice] = "Task was successfully created."
+      flash[:notice] = "タスクを登録しました"
       redirect_to tasks_path
     else
       render :new
     end
   end
   
-
+  
   # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
     @task = Task.new(task_params)
     if @task.update(task_params)
-      flash[:notice] = "Task was successfully updated."
+      flash[:notice] = "タスクを更新しました"
       redirect_to task_path(@task)
     else
       flash[:notice] = "Title can't be blank."
@@ -49,7 +49,7 @@ class TasksController < ApplicationController
     @task.destroy
 
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: "Task was successfully destroyed." }
+      format.html { redirect_to tasks_url, notice: "タスクを削除しました" }
       format.json { head :no_content }
     end
   end

@@ -1,5 +1,5 @@
-<h1>タスク編集ページ</h1>
+<h1><%= t('index.Edit Task Page') %></h1>
 
 <%= render 'form_update', task: @task %>
 
-<%= link_to '戻る', tasks_path, id: "back" %>
+<%= link_to t('common.Back'), tasks_path, id: "back" %>

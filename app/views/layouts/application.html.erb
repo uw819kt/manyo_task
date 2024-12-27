@@ -11,8 +11,8 @@
 
   <body>
     <ul>
-      <li><%= link_to "タスク一覧", tasks_path, id: "tasks-index" %></li>
-      <li><%= link_to "タスクを登録する", new_task_path, id: "new-task"%></li>
+      <li><%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index" %></li>
+      <li><%= link_to t('navigation.New Task'), new_task_path, id: "new-task"%></li>
     </ul>
     <%= yield %>
   </body>

@@ -1,13 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<h1>タスク一覧ページ</h1>
+<h1><%= t('index.Tasks Index Page') %></h1>
 
 <table>
   <thead>
     <tr>
-      <th>タイトル</th>
-      <th>内容</th>
-      <th>作成日時</th>
+      <th><%= t('index.Title') %></th>
+      <th><%= t('index.Content') %></th>
+      <th><%= t('index.Created_at') %></th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,13 +17,15 @@
       <tr>
         <td><%= task.title %></td>
         <td><%= task.content %></td>
-        <td><%= task.created_at %></td>
-        <td><%= link_to '詳細', task, class: "show-task" %></td>
-        <td><%= link_to '編集', edit_task_path(task), class: "edit-task" %></td>
-        <td><%= link_to '削除', task, method: :delete, data: { confirm: '本当に削除してもよろしいですか?' }, class: "destroy-task" %></td>
+        <td><%= task. created_at.to_s(:datetime_jp) %></td>
+        <td><%= link_to t('common.Show'), task, class: "show-task" %></td>
+        <td><%= link_to t('common.Edit'), edit_task_path(task), class: "edit-task" %></td>
+        <td><%= link_to t('common.Destroy'), task, method: :delete, data: { confirm: t('common.Are you sure?') }, class: "destroy-task" %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
+<%= paginate @tasks %>
 <br>
+
+

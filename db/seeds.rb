@@ -32,9 +32,9 @@ Task.create(
 
 10.times do |n|
   Task.create(
-    title: "#{i.ordinalize}_Title", 
+    title: "#{n.ordinalize}_Title", 
     content:"task_content#{n}",
-    deadline_on: Faker::Date.between(from: Date.today, to: 1.month.from_now)
+    deadline_on: Faker::Date.between(from: Date.today, to: 1.month.from_now),
     priority: rand(0..2),
     status: rand(0..2)
     )

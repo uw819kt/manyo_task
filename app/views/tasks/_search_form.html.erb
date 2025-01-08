@@ -1,0 +1,12 @@
+<%= form_with(scope: :search, url: tasks_path, method: :get, local: true) do |form| %>
+  <div class="field">
+    <%= form.label(:status, "ステータス") %>
+    <%= form.select :status, Task.statuses.keys, { include_blank: true } %>
+  </div>
+
+  <div class="field">
+    <%= form.label(:title, "タイトル") %>
+    <%= form.text_field :title %>
+    <%= form.submit "検索", id: "search_task" %>
+  </div>
+<% end %>

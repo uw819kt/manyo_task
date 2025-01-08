@@ -2,14 +2,22 @@ ja:
   navigation:
     Tasks Index: タスク一覧
     New Task: タスクを登録する
+    Profile: アカウント設定
+    Logout: ログアウト
+    Sign up: アカウント登録
+    Login: ログイン
   index:
     Tasks Index Page: タスク一覧ページ
     New Task Page: タスク登録ページ
     Show Task Page: タスク詳細ページ
     Edit Task Page: タスク編集ページ
+    Sign up: アカウント登録ページ
     Title: タイトル
     Content: 内容
     Created_at: 作成日時
+    Deadline_on: 終了期限
+    Priority: 優先度
+    Status: ステータス
   activerecord:
     models:
       task: タスク
@@ -18,6 +26,9 @@ ja:
         title: タイトル
         content: 内容
         created_at: 作成日時
+        deadline_on: 終了期限
+        priority: 優先度
+        status: ステータス
       user:
         name: 名前
         email: メールアドレス

@@ -36,15 +36,25 @@ RSpec.describe 'タスク管理機能', type: :system do
     context '「終了期限」というリンクをクリックした場合' do
       it "終了期限昇順に並び替えられたタスク一覧が表示される" do
         # allメソッドを使って複数のテストデータの並び順を確認する
+        # データベースの中身を順番に並び替えてオブジェクトから取り出す
         click_link "終了期限"
-        expect(Task.all.order(deadline_on: :asc).first.deadline_on).to eq Date.new(2022, 2, 16)
+        sleep 1 # page.all('tbody tr')データ生成が間に合ってないため遅らせる
+        date = ["2022-02-16", "2022-02-17", "2022-02-18", "2022-02-18"]
+        page.all('tbody tr').each_with_index do |tr, idx| 
+          # 要素とそのインデックスをブロックに渡して繰り返す
+          expect(tr.all("td")[3].text).to eq date[idx] # trは試行回数、idxとdateArrayのインデックス対応
+          # trの全ての要素取得、その中の3番目のtd(終了期限)を取得＝dateArrayになるか
+        end       
       end
     end
       context '「優先度」というリンクをクリックした場合' do
         it "優先度の高い順に並び替えられたタスク一覧が表示される" do
           # allメソッドを使って複数のテストデータの並び順を確認する
           click_link "優先度"
-          expect(Task.all.order(priority: :desc).first.priority).to eq "高"
+          priority = ["高", "中", "中", "低"]
+          page.all('tbody tr').each_with_index do |tr, idx|
+            expect(tr.all("td")[4].text).to eq priority[idx]
+          end
         end
       end
     end
@@ -58,8 +68,8 @@ RSpec.describe 'タスク管理機能', type: :system do
         # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
         fill_in 'タイトル', with: 'first'
         click_button "検索"
-        expect(Task.search_title('first')).to include(first_task)
-        expect(Task.search_title('first')).not_to include(second_task)
+        expect(all("tr")[1].text).to have_text 'first_task_title'
+        expect(all("tr")[1].text).not_to have_text "second_task_title"
       end
     end
     context 'ステータスで検索した場合' do
@@ -67,8 +77,8 @@ RSpec.describe 'タスク管理機能', type: :system do
         # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
         select '未着手', from: 'search_status'
         click_button "検索"
-        expect(Task.search_title('first')).to include(first_task)
-        expect(Task.search_title('first')).not_to include(second_task)
+        expect(all("tr")[1].text).to have_text '未着手'
+        expect(all("tr")[1].text).not_to have_text "完了"
       end
     end
     context 'タイトルとステータスで検索した場合' do
@@ -77,8 +87,9 @@ RSpec.describe 'タスク管理機能', type: :system do
         fill_in 'タイトル', with: 'first'
         select '未着手', from: 'search_status'
         click_button "検索"
-        expect(Task.search_title('first')).to include(first_task)
-        expect(Task.search_title('first')).not_to include(second_task)
+        expect(all("tr")[1].text).to have_text('first_task_title').and have_text('未着手')
+        expect(all("tr")[1].text).not_to have_text "second_task_title"
+        expect(all("tr")[1].text).not_to have_text "完了"
       end
     end
   end

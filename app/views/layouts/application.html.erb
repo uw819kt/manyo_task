@@ -10,10 +10,24 @@
   </head>
 
   <body>
-    <ul>
-      <li><%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index" %></li>
-      <li><%= link_to t('navigation.New Task'), new_task_path, id: "new-task"%></li>
-    </ul>
+    
+    <% if logged_in? %>
+      <ul>
+        <li><%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index" %></li>
+        <li><%= link_to t('navigation.New Task'), new_task_path, id: "new-task"%></li>
+        <li><%= link_to t('navigation.Profile'), user_path(current_user.id), id: "account-setting" %></li>
+        <li><%= link_to t('navigation.Logout'), session_path(current_user.id), method: :delete, id: "sign-out" %></li>
+      </ul>
+    <% else %>
+      <ul>
+        <li><%= link_to t('navigation.Sign up'), new_user_path, id: "sign-up" %></li>
+        <li><%= link_to t('navigation.Login'), new_session_path, id: "sign-in" %></li>
+      </ul>
+    <% end %>
+    <% flash.each do |key, value| %>
+      <%= content_tag(:div, value, class: "#{key}") %>
+    <% end %>
+    
     <%= yield %>
   </body>
 </html>

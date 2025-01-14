@@ -13,7 +13,7 @@
   </thead>
 
   <tbody>
-    <% @users.eager_load(:tasks)each do |user| %>
+    <% @users.eager_load(:tasks).each do |user| %>
       <tr>
         <td><%= user.name %></td>
         <td><%= user.email %></td>

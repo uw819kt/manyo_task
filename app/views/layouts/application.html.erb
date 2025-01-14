@@ -12,12 +12,23 @@
   <body>
     
     <% if logged_in? %>
-      <ul>
-        <li><%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index" %></li>
-        <li><%= link_to t('navigation.New Task'), new_task_path, id: "new-task"%></li>
-        <li><%= link_to t('navigation.Profile'), user_path(current_user.id), id: "account-setting" %></li>
-        <li><%= link_to t('navigation.Logout'), session_path(current_user.id), method: :delete, id: "sign-out" %></li>
-      </ul>
+      <% if current_user.admin? %>
+        <ul>
+          <li><%= link_to "ユーザ一覧", admin_users_path, id: "users-index" %></li>
+          <li><%= link_to "ユーザを登録する", new_admin_user_path, id: "add-user" %></li>
+          <li><%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index" %></li>
+          <li><%= link_to t('navigation.New Task'), new_task_path, id: "new-task"%></li>
+          <li><%= link_to t('navigation.Profile'), user_path(current_user.id), id: "account-setting" %></li>
+          <li><%= link_to t('navigation.Logout'), session_path(current_user.id), method: :delete, id: "sign-out" %></li>
+        </ul>
+      <% else %>
+        <ul>
+          <li><%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index" %></li>
+          <li><%= link_to t('navigation.New Task'), new_task_path, id: "new-task"%></li>
+          <li><%= link_to t('navigation.Profile'), user_path(current_user.id), id: "account-setting" %></li>
+          <li><%= link_to t('navigation.Logout'), session_path(current_user.id), method: :delete, id: "sign-out" %></li>
+        </ul>
+      <% end %>
     <% else %>
       <ul>
         <li><%= link_to t('navigation.Sign up'), new_user_path, id: "sign-up" %></li>

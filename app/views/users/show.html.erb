@@ -4,4 +4,5 @@
 
 <div>
   <%= link_to "編集", edit_user_path, id: "edit-user" %>
+  <%= link_to "削除", user_path(@user), method: :delete, id: "destroy-user", data: { confirm: '本当に削除してもよろしいですか？' } %>
 </div>

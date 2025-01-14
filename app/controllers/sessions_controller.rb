@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
   skip_before_action :login_required, only: [:new, :create]
-
+  # ログイン機能
+  
   def new
   end
 
@@ -8,8 +9,13 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       log_in(user)
-      redirect_to user_path(user.id)
+      flash[:notice] = 'ログインしました'
       # ログイン成功した場合
+      if user.admin? # 管理者か確認
+        redirect_to tasks_path # 管理者画面(true)
+      else
+        redirect_to tasks_path(user.id) # 利用者画面(false)
+      end
     else
       flash.now[:danger] = 'メールアドレスまたはパスワードに誤りがあります'
       render :new

@@ -1,0 +1,25 @@
+<h1><%= "ユーザ登録ページ" %></h1>
+<% if @admin.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@admin.errors.count, "件のエラーが発生しました") %></h2>
+    <ul>
+    <% @admin.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: [:admin, @admin], local: true do |f| %>
+  <%= f.label :"名前" %>
+  <%= f.text_field :name %>
+  <%= f.label :"メールアドレス" %>
+  <%= f.email_field :email %>
+  <%= f.label :"パスワード" %>
+  <%= f.password_field :password %>
+  <%= f.label :"パスワード（確認）" %>
+  <%= f.password_field :password_confirmation %>
+  <%= f.label :"管理者権限" %>
+  <%= f.check_box :admin %>
+  <%= f.submit "登録する", id: "create-user" %>
+<% end %>

@@ -18,6 +18,7 @@ ja:
     Deadline_on: 終了期限
     Priority: 優先度
     Status: ステータス
+    Users Index Page: ユーザ一覧ページ
   activerecord:
     models:
       task: タスク
@@ -34,13 +35,21 @@ ja:
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワード（確認）
+      session:
+        email: メールアドレス
+        password: パスワード
   errors:
     format: "%{attribute}%{message}"
     messages:
       blank: を入力してください
       invalid: が無効です
       confirmation: と%{attribute}の入力が一致しません
+      required: 入力必須項目です
   helpers:
+    label:
+      session:
+        email: メールアドレス
+        password: パスワード
     submit:
       create: 登録する
       update: 更新する

@@ -1,9 +1,10 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
-
+  skip_before_action :redirect_logged_in, only: [:new, :create]
+  
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = current_user.tasks
     sort_deadline = params[:sort_deadline_on]
     sort_priority = params[:sort_priority]
     if sort_deadline == "true"
@@ -47,7 +48,7 @@ class TasksController < ApplicationController
 
   # POST /tasks or /tasks.json
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
     if @task.save
       flash[:notice] = "タスクを登録しました"
       redirect_to tasks_path
@@ -82,17 +83,24 @@ class TasksController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_task
-      @task = Task.find(params[:id])
-    end
+  def set_task
+    @task = Task.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def task_params
-      params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
-    end
+  # Only allow a list of trusted parameters through.
+  def task_params
+    params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
+  end
 
-    def task_search_params
-      params.fetch(:search, {}).permit(:status, :title)
-      # params[:search]が空の時{}を返し、params[:search]が空でない場合、params[:search]を返す
+  def task_search_params
+    params.fetch(:search, {}).permit(:status, :title)
+    # params[:search]が空の時{}を返し、params[:search]が空でない場合、params[:search]を返す
+  end
+    
+  def check_task_owner
+    unless @task.user == current_user
+      flash[:alert] = "アクセス権限がありません"
+      redirect_to tasks_path
     end
+  end  
 end

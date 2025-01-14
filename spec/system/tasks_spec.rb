@@ -4,8 +4,15 @@ require 'rails_helper'
 
 RSpec.describe 'タスク管理機能', type: :system do
   describe '登録機能' do
-    let!(:task) { FactoryBot.create(:task, title: 'task_title') }
+    let!(:task) { FactoryBot.create(:task) }
     # let(:メソッド名) { FactoryBot.create(:モデル名) }
+    let!(:user) { FactoryBot.create(:user) }
+    before do
+      visit new_session_path
+      fill_in 'メールアドレス', with: 'abc@example.com'
+      fill_in 'パスワード', with: 'password'
+      click_button 'ログイン'
+    end
 
     context 'タスクを登録した場合' do
       it '登録したタスクが表示される' do

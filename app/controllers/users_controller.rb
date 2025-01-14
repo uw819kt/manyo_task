@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
   skip_before_action :login_required, only: [:new, :create]
   before_action :correct_user, only: [:show]
+  # before_action :redirect_logged_in, only: [:new, :create]
+
+  # アカウント作成・編集・詳細
 
   def new
     @user = User.new
@@ -11,7 +14,7 @@ class UsersController < ApplicationController
     if @user.save
       log_in(@user)
       flash[:notice] = 'アカウントを登録しました'
-      redirect_to user_path(@user.id)
+      redirect_to tasks_path(@user.id)
       # 成功した場合
     else
       render :new
@@ -40,15 +43,29 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    redirect_to new_session_path
+    #ビューファイルのリンクはルーティングヘルパーを使う、手動×
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :admin)
   end
 
   def correct_user
   # パラメータのidを使ってデータベースからユーザを取り出し、current_user?メソッドの引数に渡す  
     @user = User.find(params[:id])
     redirect_to current_user unless current_user?(@user)
+  end
+
+  def redirect_logged_in # ログイン中アカウント登録画面アクセスでリダイレクト
+    if logged_in? && !current_user.admin?
+      flash[:alert] = "ログアウトしてください"
+      redirect_to tasks_path
+    end
   end
 end

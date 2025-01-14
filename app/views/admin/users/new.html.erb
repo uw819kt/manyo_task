@@ -1,16 +1,16 @@
 <h1><%= "ユーザ登録ページ" %></h1>
-<% if @admin.errors.any? %>
+<% if @user.errors.any? %>
   <div id="error_explanation">
-    <h2><%= pluralize(@admin.errors.count, "件のエラーが発生しました") %></h2>
+    <h2><%= pluralize(@user.errors.count, "件のエラーが発生しました") %></h2>
     <ul>
-    <% @admin.errors.full_messages.each do |message| %>
+    <% @user.errors.full_messages.each do |message| %>
       <li><%= message %></li>
     <% end %>
     </ul>
   </div>
 <% end %>
 
-<%= form_with model: [:admin, @admin], local: true do |f| %>
+<%= form_with model: [:admin, @user], local: true do |f| %>
   <%= f.label :"名前" %>
   <%= f.text_field :name %>
   <%= f.label :"メールアドレス" %>

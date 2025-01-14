@@ -15,7 +15,7 @@ class User < ApplicationRecord
   # inclusionは与えられた集合に属性の値が含まれているか否かを検証
 
   before_update :admin_update_confirmation
-  before_destroy :admin_destoroy_confirmation
+  before_destroy :admin_destoroy_confirmation, if: :admin?
 
 
   def admin? # 管理者かどうかを確認する
@@ -23,18 +23,19 @@ class User < ApplicationRecord
   end
   private
 
-  def admin_update_confirmation # 削除前確認
-    if will_save_change_to_admin? && admin == true && User.where(admin: true).count == 1
-      errors.add(:admin, "管理者が0人になるため権限を変更できません")
-      throw :abort # 削除処理中止
+  def admin_update_confirmation # 更新前確認
+    if will_save_change_to_admin? && admin == false && User.where(admin: true).count == 1
+      errors.add(:base, "管理者が0人になるため権限を変更できません")
+      throw :abort # 更新処理中止
     end
   end
 
   def admin_destoroy_confirmation # 削除前確認
-    if will_save_change_to_admin? && admin == true && User.where(admin: true).count == 1
-      errors.add(:admin, "管理者が0人になるため削除できません")
+    if  User.where(admin: true).count == 1
+      errors.add(:base, "管理者が0人になるため削除できません")
       throw :abort # 削除処理中止
     end
   end
 end
 # コールバックのbefore_updateを使って人数を調べる、処理止める、メッセージ表示をする
+# will_save_change_to_admin? && admin == true &&

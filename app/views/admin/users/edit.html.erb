@@ -1,7 +1,7 @@
 <h1>ユーザ編集ページ</h1>
 <%= render 'admin/users/error_messages' %>
 
-<%= form_with model: [:admin, @admin], local: true do |f| %>
+<%= form_with model: [:admin, @user], local: true do |f| %>
   <%= f.label :"名前" %>
   <%= f.text_field :name %>
   <%= f.label :"メールアドレス" %>
@@ -11,7 +11,7 @@
   <%= f.label :"パスワード（確認）" %>
   <%= f.password_field :password_confirmation %>
   <%= f.label :"管理者権限" %>
-  <%= f.check_box :admin, { checked: @admin.admin? }, true, false %>
+  <%= f.check_box :admin, {}, true, false %>
   <%= f.submit "更新する", id: "update-user" %>
 <% end %>
 

@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   include SessionsHelper
   before_action :login_required
-  # before_action :admin_required
   #アクション実行前にlogin_requiredが呼ばれる
   before_action :redirect_logged_in, only: [:new, :create]
   

@@ -22,7 +22,7 @@
 
         <td><%= link_to t('common.Show'), admin_user_path(user), class: "show-user" %></td>
         <td><%= link_to t('common.Edit'), edit_admin_user_path(user), class: "edit-user" %></td>
-        <td><%= link_to t('common.Destroy'), admin_users_path(user), method: :delete, data: { confirm: t('common.Are you sure?') }, class: "destroy-user" %></td>
+        <td><%= link_to t('common.Destroy'), admin_user_path(user), method: :delete, data: { confirm: t('common.Are you sure?') }, class: "destroy-user" %></td>
       </tr>
     <% end %>
   </tbody>

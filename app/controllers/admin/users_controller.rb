@@ -10,12 +10,12 @@ class Admin::UsersController < ApplicationController
   end
 
   def new
-    @admin = User.new
+    @user = User.new
   end
 
   def create
-    @admin = User.new(user_params)
-    if @admin.save
+    @user = User.new(user_params)
+    if @user.save
       flash[:notice] = 'ユーザを登録しました'
       redirect_to admin_users_path
       # 成功した場合
@@ -26,21 +26,22 @@ class Admin::UsersController < ApplicationController
   end
 
   def show
-    @admin = User.find(params[:id])
+    @user = User.find(params[:id])
   end
 
   def edit
-    @admin = current_user
+    @user = User.find(params[:id])
     #edit.htmlと依存関係が発生、htmlファイルはローカル変数が望ましい
   end
 
   def update
-    @admin = User.find(params[:id]) #データ取得
-    if @admin.update(user_params)
+    @user = User.find(params[:id]) #データ取得
+    binding.irb
+    if @user.update(user_params)
       flash[:notice] = 'ユーザを更新しました'
-      redirect_to admin_users #ユーザの詳細ページ(show)へ
+      redirect_to admin_users_path #ユーザの詳細ページ(show)へ
     else
-      flash[:error] = 'ユーザを更新できませんでした'
+      flash[:alert] = @user.errors.full_messages.to_sentence
       render :edit
       #失敗の処理はrenderでないとバリデーション×、編集画面出力、
     end
@@ -48,8 +49,13 @@ class Admin::UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
-    redirect_to new_session_path
+    if @user.destroy
+      flash[:notice] = 'ユーザを削除しました'
+    else
+      flash[:alert] = @user.errors.full_messages.to_sentence
+      # モデルのエラーメッセージをフラッシュに設定
+    end
+    redirect_to admin_users_path
     #ビューファイルのリンクはルーティングヘルパーを使う、手動×
   end
 
@@ -60,7 +66,7 @@ class Admin::UsersController < ApplicationController
 
   def admin_required
     unless current_user&.admin?
-      flash[:alert] = "管理者専用のページです"
+      flash[:alert] = "管理者以外アクセスできません"
       redirect_to tasks_path
     end
   end

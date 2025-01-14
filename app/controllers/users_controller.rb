@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :login_required, only: [:new, :create]
   before_action :correct_user, only: [:show]
-  # before_action :redirect_logged_in, only: [:new, :create]
+  before_action :redirect_logged_in, only: [:new, :create]
 
   # アカウント作成・編集・詳細
 

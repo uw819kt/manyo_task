@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
   skip_before_action :redirect_logged_in, only: [:new, :create]
+  before_action :check_task_owner, only: [:show, :edit]
   
   # GET /tasks or /tasks.json
   def index
@@ -98,8 +99,9 @@ class TasksController < ApplicationController
   end
     
   def check_task_owner
-    unless @task.user == current_user
-      flash[:alert] = "アクセス権限がありません"
+    @task = Task.find(params[:id])
+    if @task.user != current_user
+      flash[:alert] = "管理者以外アクセスできません"
       redirect_to tasks_path
     end
   end  

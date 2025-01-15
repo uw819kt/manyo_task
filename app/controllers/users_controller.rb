@@ -62,8 +62,8 @@ class UsersController < ApplicationController
     redirect_to current_user unless current_user?(@user)
   end
 
-  def redirect_logged_in # ログイン中アカウント登録画面アクセスでリダイレクト
-    if logged_in? && !current_user.admin?
+  def redirect_logged_in # ログイン中ログイン画面アクセスでリダイレクト
+    if logged_in?
       flash[:alert] = "ログアウトしてください"
       redirect_to tasks_path
     end

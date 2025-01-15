@@ -3,7 +3,33 @@
 <p>メールアドレス: <%= @user.email %></p>
 <p>管理者権限: <%= @user.admin ? 'あり' : 'なし'%></p>
 
-<%= render 'user_index' %>
+
+<table>
+  <thead>
+    <tr>
+      <th><%= t('index.Title') %></th>
+      <th><%= t('index.Content') %></th>
+      <th><%= t('index.Created_at') %></th>
+      <th><%= t('index.Deadline_on') %></th>
+      <th><%= t('index.Priority') %></th>
+      <th><%= t('index.Status') %></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.content %></td>
+        <td><%= task. created_at.to_s(:datetime_jp) %></td>
+        <td><%= task.deadline_on %></td>
+        <td><%= task.priority %></td>
+        <td><%= task.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <div>
   <%= link_to t('common.Back'), admin_users_path, id: "back" %>

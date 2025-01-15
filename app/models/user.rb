@@ -14,7 +14,9 @@ class User < ApplicationRecord
   validates :admin, inclusion: { in: [true, false] }
   # inclusionは与えられた集合に属性の値が含まれているか否かを検証
 
-  before_update :admin_update_confirmation
+  before_update :admin_update_confirmation, if: :admin_changed? 
+  # if: :条件→特定の条件を満たす場合のみコールバックを実行するための条件を指定
+  # _changed→属性が変更した時にtrueを返すRailsのヘルパーメソッド
   before_destroy :admin_destoroy_confirmation, if: :admin?
 
 
@@ -24,7 +26,7 @@ class User < ApplicationRecord
   private
 
   def admin_update_confirmation # 更新前確認
-    if will_save_change_to_admin? && admin == false && User.where(admin: true).count == 1
+    if self.admin == false && User.where(admin: true).count == 1
       errors.add(:base, "管理者が0人になるため権限を変更できません")
       throw :abort # 更新処理中止
     end
@@ -38,4 +40,3 @@ class User < ApplicationRecord
   end
 end
 # コールバックのbefore_updateを使って人数を調べる、処理止める、メッセージ表示をする
-# will_save_change_to_admin? && admin == true &&

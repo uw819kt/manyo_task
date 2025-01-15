@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
   skip_before_action :login_required, only: [:new, :create]
   # ログイン機能
+  before_action :redirect_logged_in, only: [:new]
   
   def new
   end
@@ -28,5 +29,12 @@ class SessionsController < ApplicationController
     flash[:notice] = 'ログアウトしました'
     redirect_to new_session_path
   end
+private
 
+  def redirect_logged_in # ログイン中ログイン画面アクセスでリダイレクト
+    if logged_in?
+      flash[:alert] = "ログアウトしてください"
+      redirect_to tasks_path
+    end
+  end 
 end

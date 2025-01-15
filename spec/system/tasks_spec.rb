@@ -2,25 +2,23 @@ require 'rails_helper'
 # chromedriverとgoogle-chrome（headless）をインストール
 # bundle exec rspec spec/system/tasks_spec.rbコマンドでテストを実行
 
-RSpec.describe 'タスク管理機能', type: :system do
-  describe '登録機能' do
-    let!(:task) { FactoryBot.create(:task) }
-    # let(:メソッド名) { FactoryBot.create(:モデル名) }
-    let!(:user) { FactoryBot.create(:user) }
-    before do
-      visit new_session_path
-      fill_in 'メールアドレス', with: 'abc@example.com'
-      fill_in 'パスワード', with: 'password'
-      click_button 'ログイン'
+RSpec.describe 'タスク管理機能', type: :system do  
+  user = FactoryBot.create(:user)
+  before do
+    # ログイン処理
+    visit new_session_path
+    sleep 0.5
+    fill_in 'session_email', with: user.email
+    fill_in 'session_password', with: user.password
+    click_button 'create-session'
     end
-
+  describe '登録機能' do
     context 'タスクを登録した場合' do
       it '登録したタスクが表示される' do
-        visit new_task_path
-        fill_in 'タイトル', with: '書類作成' # fill_in""with:""でフィールド入力
-        fill_in '内容', with: '書類作成の内容'
-        click_button "登録する"
-        expect(page).to have_text '書類作成'
+        task = FactoryBot.create(:task, user: user)
+        visit task_path(user.id)
+        expect(page).to have_content 'task1'
+        expect(page).to have_content '企画書を作成する'
       end
     end
   end

@@ -1,5 +1,7 @@
 class User < ApplicationRecord
-  has_many :tasks, dependent: :destroy
+  has_many :tasks, dependent: :destroy 
+  # has_many :labels
+  # dependent: :destroy→親オブジェクトが削除される際に、関連する子オブジェクトも自動的に削除する
   
   validates :name, presence: true, length: { maximum: 30 }
   validates :email, presence: true, length: { maximum: 255 }, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }

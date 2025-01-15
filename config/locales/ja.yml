@@ -6,19 +6,27 @@ ja:
     Logout: ログアウト
     Sign up: アカウント登録
     Login: ログイン
+    Users Index: ユーザ一覧
+    New User: ユーザを登録する
+    Labels Index: ラベル一覧
+    New Label: ラベルを登録する
   index:
     Tasks Index Page: タスク一覧ページ
     New Task Page: タスク登録ページ
     Show Task Page: タスク詳細ページ
     Edit Task Page: タスク編集ページ
     Sign up: アカウント登録ページ
+    New Label Page: ラベル登録ページ
+    Edit Label Page: ラベル編集ページ
     Title: タイトル
     Content: 内容
     Created_at: 作成日時
     Deadline_on: 終了期限
     Priority: 優先度
     Status: ステータス
+    label: ラベル
     Users Index Page: ユーザ一覧ページ
+    Labels Index Page: ラベル一覧ページ
   activerecord:
     models:
       task: タスク
@@ -38,6 +46,8 @@ ja:
       session:
         email: メールアドレス
         password: パスワード
+      label:
+        name: 名前
   errors:
     format: "%{attribute}%{message}"
     messages:
@@ -45,6 +55,7 @@ ja:
       invalid: が無効です
       confirmation: と%{attribute}の入力が一致しません
       required: 入力必須項目です
+      record_invalid: "バリデーションに失敗しました: %{errors}"
   helpers:
     label:
       session:

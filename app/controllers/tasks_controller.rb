@@ -21,14 +21,14 @@ class TasksController < ApplicationController
     if params[:search].present? # searchパラメータがあるか?
       if params[:search][:title].present? && params[:search][:status].present? 
       # パラメータにタイトルとステータスの両方があった場合
-        @tasks = Task.search_title_and_status(params[:search][:title], params[:search][:status]).page(params[:page]).per(10)
+        @tasks = @tasks.search_title_and_status(params[:search][:title], params[:search][:status]).page(params[:page]).per(10)
       elsif params[:search][:title].present? 
       # パラメータにタイトルのみがあった場合
-        @tasks = Task.search_title(params[:search][:title]).page(params[:page]).per(10)
+        @tasks = @tasks.search_title(params[:search][:title]).page(params[:page]).per(10)
       elsif params[:search][:status].present?
       # パラメータにステータスのみがあった場合
-        status_value = Task.statuses[params[:search][:status]]
-        @tasks = Task.search_status(status_value).page(params[:page]).per(10)
+        status_value = @tasks.statuses[params[:search][:status]]
+        @tasks = @tasks.search_status(status_value).page(params[:page]).per(10)
       end
     end
   end

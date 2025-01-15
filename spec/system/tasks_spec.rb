@@ -2,21 +2,19 @@ require 'rails_helper'
 # chromedriverとgoogle-chrome（headless）をインストール
 # bundle exec rspec spec/system/tasks_spec.rbコマンドでテストを実行
 
-RSpec.describe 'タスク管理機能', type: :system do  
-  user = FactoryBot.create(:user)
-  before do
-    # ログイン処理
-    visit new_session_path
-    sleep 0.5
-    fill_in 'session_email', with: user.email
-    fill_in 'session_password', with: user.password
-    click_button 'create-session'
-    end
+RSpec.describe 'タスク管理機能', type: :system do   
   describe '登録機能' do
+    let!(:user) { FactoryBot.create(:user) }
+    before do     # ログイン処理      
+      visit new_session_path
+      fill_in 'メールアドレス', with: 'abc@example.com'
+      fill_in 'パスワード', with: 'password'
+      click_button 'ログイン'    
+    end
     context 'タスクを登録した場合' do
-      it '登録したタスクが表示される' do
+      it '登録したタスクが表示される' do #ok
         task = FactoryBot.create(:task, user: user)
-        visit task_path(user.id)
+        visit task_path(task)
         expect(page).to have_content 'task1'
         expect(page).to have_content '企画書を作成する'
       end
@@ -24,20 +22,18 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
 
   describe '一覧表示機能' do
-    let!(:task) { FactoryBot.create(:task, title: 'task_title') }
-    # 変数のように扱うことができる、複数テストでデータ共有可、let!は使用時に読み込まれる
-    let!(:second_task) { FactoryBot.create(:task, title: 'task_title') }
-    let!(:third_task) { FactoryBot.create(:task, title: 'task_title') }
-
+    describe 'ソート機能' do
+    let!(:user) { FactoryBot.create(:user) }
     before do
-    # contextが実行されるタイミングでbefore内のコードが実行
+      visit new_session_path
+      fill_in 'メールアドレス', with: 'abc@example.com'
+      fill_in 'パスワード', with: 'password'
+      click_button 'ログイン'
       visit tasks_path
     end
-
-  describe 'ソート機能' do
-    let!(:first_task) { FactoryBot.create(:task, title: 'first_task_title', deadline_on: Date.new(2022, 2, 18), priority: '中') }
-    let!(:second_task) { FactoryBot.create(:second_task, title: "second_task_title", deadline_on: Date.new(2022, 2, 17), priority: '高') }
-    let!(:third_task) { FactoryBot.create(:third_task, title: "third_task_title", deadline_on: Date.new(2022, 2, 16), priority: '低') }
+    let!(:first_task) { FactoryBot.create(:task, title: 'first_task_title', deadline_on: Date.new(2022, 2, 18), priority: '中', user: user) }
+    let!(:second_task) { FactoryBot.create(:second_task, title: "second_task_title", deadline_on: Date.new(2022, 2, 17), priority: '高', user: user) }
+    let!(:third_task) { FactoryBot.create(:third_task, title: "third_task_title", deadline_on: Date.new(2022, 2, 16), priority: '低', user: user) }
     context '「終了期限」というリンクをクリックした場合' do
       it "終了期限昇順に並び替えられたタスク一覧が表示される" do
         # allメソッドを使って複数のテストデータの並び順を確認する
@@ -56,6 +52,7 @@ RSpec.describe 'タスク管理機能', type: :system do
         it "優先度の高い順に並び替えられたタスク一覧が表示される" do
           # allメソッドを使って複数のテストデータの並び順を確認する
           click_link "優先度"
+          sleep 1
           priority = ["高", "中", "中", "低"]
           page.all('tbody tr').each_with_index do |tr, idx|
             expect(tr.all("td")[4].text).to eq priority[idx]
@@ -65,9 +62,16 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
 
   describe '検索機能' do
-    let!(:first_task) { FactoryBot.create(:task, title: 'first_task_title', deadline_on: Date.new(2022, 2, 18), priority: '中') }
-    let!(:second_task) { FactoryBot.create(:second_task, title: "second_task_title", deadline_on: Date.new(2022, 2, 17), priority: '高') }
-    let!(:third_task) { FactoryBot.create(:third_task, title: "third_task_title", deadline_on: Date.new(2022, 2, 16), priority: '低') }
+    let!(:user) { FactoryBot.create(:user) }
+    before do
+      visit new_session_path
+      fill_in 'メールアドレス', with: 'abc@example.com'
+      fill_in 'パスワード', with: 'password'
+      click_button 'ログイン'
+    end
+    let!(:first_task) { FactoryBot.create(:task, title: 'first_task_title', deadline_on: Date.new(2022, 2, 18), priority: '中', user: user) }
+    let!(:second_task) { FactoryBot.create(:second_task, title: "second_task_title", deadline_on: Date.new(2022, 2, 17), priority: '高', user: user) }
+    let!(:third_task) { FactoryBot.create(:third_task, title: "third_task_title", deadline_on: Date.new(2022, 2, 16), priority: '低', user: user) }
     context 'タイトルであいまい検索をした場合' do
       it "検索ワードを含むタスクのみ表示される" do
         # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
@@ -98,7 +102,15 @@ RSpec.describe 'タスク管理機能', type: :system do
       end
     end
   end
+  
     context '一覧画面に遷移した場合' do
+      let!(:user) { FactoryBot.create(:user) }
+      before do
+        visit new_session_path
+        fill_in 'メールアドレス', with: 'abc@example.com'
+        fill_in 'パスワード', with: 'password'
+        click_button 'ログイン'
+      end
       it '作成済みのタスク一覧が作成日時の降順で表示される' do
         expect(page).to have_content 'task'
         # visit（遷移）したpage（この場合、タスク一覧画面）に"書類作成"という文字列が、have_content（含まれていること）をexpect（確認・期待）する
@@ -106,6 +118,13 @@ RSpec.describe 'タスク管理機能', type: :system do
       end
     end
     context '新たにタスクを作成した場合' do
+      let!(:user) { FactoryBot.create(:user) }
+      before do
+        visit new_session_path
+        fill_in 'メールアドレス', with: 'abc@example.com'
+        fill_in 'パスワード', with: 'password'
+        click_button 'ログイン'
+      end
       it '新しいタスクが一番上に表示される' do
         expect(page).to have_content 'task'
       end
@@ -113,7 +132,14 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
 
   describe '詳細表示機能' do
-    let!(:task) { FactoryBot.create(:task, title: 'task') }
+    let!(:user) { FactoryBot.create(:user) }
+    before do
+      visit new_session_path
+      fill_in 'メールアドレス', with: 'abc@example.com'
+      fill_in 'パスワード', with: 'password'
+      click_button 'ログイン'
+    end
+    let!(:task) { FactoryBot.create(:task, title: 'task', user: user) }
 
      context '任意のタスク詳細画面に遷移した場合' do
        it 'そのタスクの内容が表示される' do

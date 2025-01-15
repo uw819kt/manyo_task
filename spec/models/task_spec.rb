@@ -19,12 +19,14 @@ RSpec.describe 'タスクモデル機能', type: :model do
 
     context 'タスクのタイトルと説明に値が入っている場合' do
       it 'タスクを登録できる' do
+        user = User.create!(name: "テストユーザー", email: "user@example.com", password:"password")
         task = Task.create(
           title:'課題提出', 
           content: 'ステップ1まで',
           deadline_on: Date.new(2022, 2, 16),
           priority: "高",
-          status: "着手中"
+          status: "着手中",
+          user_id: user.id
           )
         expect(task).to be_valid
       end
@@ -33,9 +35,10 @@ RSpec.describe 'タスクモデル機能', type: :model do
 
   describe '検索機能' do
     # テストデータ作成
-    let!(:first_task) { FactoryBot.create(:task, title: 'first_task_title') }
-    let!(:second_task) { FactoryBot.create(:second_task, title: "second_task_title") }
-    let!(:third_task) { FactoryBot.create(:third_task, title: "third_task_title") }
+    let!(:user) { FactoryBot.create(:user) }
+    let!(:first_task) { FactoryBot.create(:task, title: 'first_task_title', user: user) }
+    let!(:second_task) { FactoryBot.create(:second_task, title: "second_task_title", user: user) }
+    let!(:third_task) { FactoryBot.create(:third_task, title: "third_task_title", user: user) }
     context 'scopeメソッドでタイトルのあいまい検索をした場合' do
       it "検索ワードを含むタスクが絞り込まれる" do
         # toとnot_toのマッチャを使って検索されたものとされなかったものの両方を確認する

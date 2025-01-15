@@ -2,7 +2,6 @@ class Admin::UsersController < ApplicationController
   before_action :admin_required
   # 管理者か判定が行われ、trueでないとコントローラにアクセス不可
   skip_before_action :login_required, only: [:create]
-  # before_action :redirect_logged_in, only: [:new, :create]
   # 管理者のログインではなくユーザ情報の変更なのでスキップしてよい(継承されているので呼び出される)
 
   def index

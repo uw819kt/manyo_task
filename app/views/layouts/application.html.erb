@@ -14,10 +14,12 @@
     <% if logged_in? %>
       <% if current_user.admin? %>
         <ul>
-          <li><%= link_to "ユーザ一覧", admin_users_path, id: "users-index" %></li>
-          <li><%= link_to "ユーザを登録する", new_admin_user_path, id: "add-user" %></li>
+          <li><%= link_to t('navigation.Users Index'), admin_users_path, id: "users-index" %></li>
+          <li><%= link_to t('navigation.New User'), new_admin_user_path, id: "add-user" %></li>
           <li><%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index" %></li>
           <li><%= link_to t('navigation.New Task'), new_task_path, id: "new-task"%></li>
+          <li><%= link_to t('navigation.Labels Index'), labels_path, id: "labels-index"%></li>
+          <li><%= link_to t('navigation.New Label'), new_label_path, id: "new-label"%></li>
           <li><%= link_to t('navigation.Profile'), user_path(current_user.id), id: "account-setting" %></li>
           <li><%= link_to t('navigation.Logout'), session_path(current_user.id), method: :delete, id: "sign-out" %></li>
         </ul>
@@ -25,6 +27,8 @@
         <ul>
           <li><%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index" %></li>
           <li><%= link_to t('navigation.New Task'), new_task_path, id: "new-task"%></li>
+          <li><%= link_to t('navigation.Labels Index'), labels_path, id: "labels-index"%></li>
+          <li><%= link_to t('navigation.New Label'), new_label_path, id: "new-label"%></li>
           <li><%= link_to t('navigation.Profile'), user_path(current_user.id), id: "account-setting" %></li>
           <li><%= link_to t('navigation.Logout'), session_path(current_user.id), method: :delete, id: "sign-out" %></li>
         </ul>

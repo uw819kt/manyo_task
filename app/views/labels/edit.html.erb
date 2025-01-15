@@ -1,0 +1,10 @@
+<h1><%= t('index.Edit Label Page') %></h1>
+<%= render 'labels/error_messages' %>
+
+<%= form_with(model: @labels, local: true) do |f| %>
+  <%= f.label :"名前" %>
+  <%= f.text_field :name %>
+  <%= f.submit "更新する", id: "update-user" %>
+<% end %>
+
+<%= link_to "戻る", user_path(current_user.id), id: "back" %>

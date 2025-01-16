@@ -109,10 +109,11 @@ RSpec.describe 'ユーザ管理機能', type: :system do
         fill_in 'user_email', with: 'aaa@example.com'
         fill_in 'user_password', with: 'password'
         fill_in 'user_password_confirmation', with: 'password'
-        uncheck 'user_admin'
+        check 'user_admin' # adminを二人に
         click_button '登録する'
 
         click_link "ユーザ一覧"
+        binding.irb
         first('a', text: '削除').click 
         # firstはページ内で指定された条件に一致する最初の要素を返すCapybaraのメソッド,'a'は<a>タグ
         page.driver.browser.switch_to.alert.accept

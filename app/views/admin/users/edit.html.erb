@@ -1,0 +1,18 @@
+<h1>ユーザ編集ページ</h1>
+<%= render 'admin/users/error_messages' %>
+
+<%= form_with model: [:admin, @user], local: true do |f| %>
+  <%= f.label :"名前" %>
+  <%= f.text_field :name %>
+  <%= f.label :"メールアドレス" %>
+  <%= f.email_field :email %>
+  <%= f.label :"パスワード" %>
+  <%= f.password_field :password %>
+  <%= f.label :"パスワード（確認）" %>
+  <%= f.password_field :password_confirmation %>
+  <%= f.label :"管理者権限" %>
+  <%= f.check_box :admin %>
+  <%= f.submit "更新する", id: "update-user" %>
+<% end %>
+
+<%= link_to "戻る", admin_users_path, id: "back" %>

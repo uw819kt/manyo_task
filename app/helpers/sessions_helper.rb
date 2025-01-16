@@ -9,6 +9,10 @@ module SessionsHelper
   def logged_in? # ユーザがログイン中かどうかを判断する
     current_user.present?
   end
+
+  def admin? # ユーザが管理者かどうかを判断する
+    self.admin
+  end
   
   def log_in(user)
     session[:user_id] = user.id

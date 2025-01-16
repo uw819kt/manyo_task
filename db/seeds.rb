@@ -6,33 +6,35 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Task.create(
-  title: "first_task", 
-  content:"task_content1",
-  deadline_on: Date.new(2022, 2, 18),
-  priority: 1,
-  status: 0
-  )
+admin_user = User.create!(
+  name: "Admin User",
+  email: "admin@example.com",
+  password: "password",
+  password_confirmation: "password",
+  admin: true
+)
 
-Task.create(
-  title: "second_task", 
-  content:"task_content2",
-  deadline_on: Date.new(2022, 2, 17),
-  priority: 2,
-  status: 1
-  )
+normal_user = User.create!(
+  name: "Normal User",
+  email: "normal@example.com",
+  password: "password",
+  password_confirmation: "password",
+  admin: false
+)
 
-Task.create(
-  title: "third_task", 
-  content:"task_content3",
-  deadline_on: Date.new(2022, 2, 16),
-  priority: 0,
-  status: 2
+50.times do |n|
+  admin_user.tasks.create(
+    title: "Admin_task#{rand(100)}",
+    content: "task_content#{n}",
+    deadline_on: Faker::Date.between(from: Date.today, to: 1.month.from_now),
+    priority: rand(0..2),
+    status: rand(0..2)
   )
+end
 
-10.times do |n|
-  Task.create(
-    title: "#{n}_Title", 
+50.times do |n|
+  normal_user.tasks.create(
+    title: "Normal_task#{rand(100)}", 
     content:"task_content#{n}",
     deadline_on: Faker::Date.between(from: Date.today, to: 1.month.from_now),
     priority: rand(0..2),

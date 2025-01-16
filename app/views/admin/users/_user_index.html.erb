@@ -1,0 +1,27 @@
+
+<table>
+  <thead>
+    <tr>
+      <th><%= t('index.Title') %></th>
+      <th><%= t('index.Content') %></th>
+      <th><%= t('index.Created_at') %></th>
+      <th><%= link_to "終了期限", sort_deadline_on: true %></th>
+      <th><%= link_to "優先度", sort_priority: true %></th>
+      <th><%= t('index.Status') %></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% current_user.tasks.each do |task| %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.content %></td>
+        <td><%= task. created_at.to_s(:datetime_jp) %></td>
+        <td><%= task.deadline_on %></td>
+        <td><%= task.priority %></td>
+        <td><%= task.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

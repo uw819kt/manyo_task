@@ -1,0 +1,10 @@
+<% if @labels.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= @labels.errors.count %>件のエラーが発生しました</h2>
+    <ul>
+    <% @labels.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>

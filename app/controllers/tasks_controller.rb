@@ -1,9 +1,10 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
-
+  before_action :check_task_owner, only: [:show, :edit, :update, :destroy]
+  
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = current_user.tasks
     sort_deadline = params[:sort_deadline_on]
     sort_priority = params[:sort_priority]
     if sort_deadline == "true"
@@ -20,14 +21,14 @@ class TasksController < ApplicationController
     if params[:search].present? # searchパラメータがあるか?
       if params[:search][:title].present? && params[:search][:status].present? 
       # パラメータにタイトルとステータスの両方があった場合
-        @tasks = Task.search_title_and_status(params[:search][:title], params[:search][:status]).page(params[:page]).per(10)
+        @tasks = @tasks.search_title_and_status(params[:search][:title], params[:search][:status]).page(params[:page]).per(10)
       elsif params[:search][:title].present? 
       # パラメータにタイトルのみがあった場合
-        @tasks = Task.search_title(params[:search][:title]).page(params[:page]).per(10)
+        @tasks = @tasks.search_title(params[:search][:title]).page(params[:page]).per(10)
       elsif params[:search][:status].present?
       # パラメータにステータスのみがあった場合
-        status_value = Task.statuses[params[:search][:status]]
-        @tasks = Task.search_status(status_value).page(params[:page]).per(10)
+        status_value = @tasks.statuses[params[:search][:status]]
+        @tasks = @tasks.search_status(status_value).page(params[:page]).per(10)
       end
     end
   end
@@ -47,7 +48,7 @@ class TasksController < ApplicationController
 
   # POST /tasks or /tasks.json
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
     if @task.save
       flash[:notice] = "タスクを登録しました"
       redirect_to tasks_path
@@ -59,7 +60,6 @@ class TasksController < ApplicationController
   
   # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
-    @task = Task.find(params[:id])
     if @task.update(task_params)
       flash[:notice] = "タスクを更新しました"
       redirect_to task_path(@task)
@@ -82,17 +82,26 @@ class TasksController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_task
-      @task = Task.find(params[:id])
-    end
+  def set_task
+    @task = Task.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def task_params
-      params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
-    end
+  # Only allow a list of trusted parameters through.
+  def task_params
+    params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
+  end
 
-    def task_search_params
-      params.fetch(:search, {}).permit(:status, :title)
-      # params[:search]が空の時{}を返し、params[:search]が空でない場合、params[:search]を返す
+  def task_search_params #params[:search]を処理、検索条件として利用できるパラメータを返す
+    params.fetch(:search, {}).permit(:status, :title)
+    # params.fetch(:search, {})→paramsハッシュの中から:searchキーの値を取得
+    # params[:search]が空の時{}を返し、params[:search]が空でない場合、params[:search]を返す
+  end
+    
+  def check_task_owner #他人のタスクにアクセスできないようにする
+    @task = Task.find(params[:id])
+    if @task.user != current_user
+      flash[:alert] = "アクセス権限がありません"
+      redirect_to tasks_path
     end
+  end
 end

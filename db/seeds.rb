@@ -22,7 +22,7 @@ normal_user = User.create!(
   admin: false
 )
 
-50.times do
+50.times do |n|
   admin_user.tasks.create(
     title: "Admin_task#{rand(100)}",
     content: "task_content#{n}",

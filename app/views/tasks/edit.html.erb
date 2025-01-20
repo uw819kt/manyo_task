@@ -40,7 +40,7 @@
 
     <div class="form-check col-12">
       <%= form.label :label_ids %>
-      <% @labels.each do |label| %>
+      <% current_user.labels.each do |label| %>
         <%= form.check_box :label_ids, { multiple: true, include_hidden: false }, label[:id], class: "form-control" %>
         <%= label.name %>
       <% end %>

@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       log_in(user)
-      flash[:notice] = 'ログインしました'
+      flash[:success] = 'ログインしました'
       # ログイン成功した場合
       if user.admin? # 管理者か確認
         redirect_to tasks_path # 管理者画面(true)
@@ -26,7 +26,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session.delete(:user_id)
-    flash[:notice] = 'ログアウトしました'
+    flash[:success] = 'ログアウトしました'
     redirect_to new_session_path
   end
 private

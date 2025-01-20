@@ -1,6 +1,7 @@
 class Task < ApplicationRecord
   belongs_to :user
-  # has_many :labels
+  has_many :task_labels, dependent: :destroy
+  has_many :labels, through: :task_labels
 
   validates :title, presence: true
   validates :content, presence: true
@@ -21,6 +22,7 @@ class Task < ApplicationRecord
 
   scope :search_title, ->(title) { where('title LIKE ?', "%#{title}%") } # タイトルで検索
   scope :search_status, ->(status) { where(status: status) } # ステータスで検索
+  scope :search_label, ->(status) { where(label: label) } # ラベルで検索
   scope :search_title_and_status, ->(title, status) { search_title(title).search_status(status) } # タイトルとステータスで検索
   #  scope :スコープの名前, -> (引数){ 条件式 } 
 end

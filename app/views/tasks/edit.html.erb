@@ -1,5 +1,55 @@
 <h1><%= t('index.Edit Task Page') %></h1>
 
-<%= render 'form_update', task: @task %>
+<%= form_with(model: @task, local: true) do |form| %>
+    <% if @task.errors.any? %>
+      <div id="error_explanation">
+        <p><%= pluralize(task.errors.count, "件") %>エラーが発生しました</p>
+  
+        <ul>
+          <% @task.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <div class="row row-gap-3">
+    <div class="form-group col-12">
+      <%= form.label :title %>
+      <%= form.text_field :title, class: "form-control" %>
+    </div>
+  
+    <div class="form-group col-12">
+      <%= form.label :content %>
+      <%= form.text_area :content, class: "form-control" %>
+    </div>
+  
+    <div class="form-group col-12">
+      <%= form.label :deadline_on %>
+      <%= form.date_field :deadline_on, class: "form-control" %>
+    </div>
+  
+    <div class="form-group col-12">
+      <%= form.label :priority %>
+      <%= form.select :priority, Task.priorities.keys, { include_blank: true }, class: "form-control" %>
+    </div>
+  
+    <div class="form-group col-12">
+      <%= form.label :status %>
+      <%= form.select :status, Task.statuses.keys, { include_blank: true }, class: "form-control" %>
+    </div>
 
-<%= link_to t('common.Back'), tasks_path, id: "back" %>
+    <div class="form-check col-12">
+      <%= form.label :label %>
+      <% Label.all.each do |label| %>
+        <%= form.check_box :label_ids, { multiple: true, include_hidden: false }, label[:id], class: "form-control" %>
+        <%= label.name %>
+      <% end %>
+    </div>
+
+    <div class="form-group col-12 d-flex justify-content-end">
+    <%= form.submit id: "update-task", class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %> 
+
+<%= link_to t('common.Back'), tasks_path, id: "back", class: "d-flex justify-content-end mt-3" %>

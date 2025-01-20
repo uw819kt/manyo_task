@@ -1,4 +1,3 @@
-<p id="notice"><%= notice %></p>
 <h1><%= t('index.Show Task Page') %></h1>
 
 <p>
@@ -29,6 +28,13 @@
 <p>
   <strong><%= t('index.Status') %>:</strong>
   <%= @task.status %>
+</p>
+
+<p>
+  <strong><%= t('index.label') %>:</strong>
+  <% @task.labels.eager_load(:tasks).each do |label| %>
+    <%= label.name %>
+  <% end %>
 </p>
 
 <%= link_to t('common.Edit'), edit_task_path(@task), id: "edit-task" %> |

@@ -4,45 +4,56 @@
     <title>CdpWebManyoTask</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    
-    <% if logged_in? %>
-      <% if current_user.admin? %>
-        <ul>
-          <li><%= link_to t('navigation.Users Index'), admin_users_path, id: "users-index" %></li>
-          <li><%= link_to t('navigation.New User'), new_admin_user_path, id: "add-user" %></li>
-          <li><%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index" %></li>
-          <li><%= link_to t('navigation.New Task'), new_task_path, id: "new-task"%></li>
-          <li><%= link_to t('navigation.Labels Index'), labels_path, id: "labels-index"%></li>
-          <li><%= link_to t('navigation.New Label'), new_label_path, id: "new-label"%></li>
-          <li><%= link_to t('navigation.Profile'), user_path(current_user.id), id: "account-setting" %></li>
-          <li><%= link_to t('navigation.Logout'), session_path(current_user.id), method: :delete, id: "sign-out" %></li>
-        </ul>
-      <% else %>
-        <ul>
-          <li><%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index" %></li>
-          <li><%= link_to t('navigation.New Task'), new_task_path, id: "new-task"%></li>
-          <li><%= link_to t('navigation.Labels Index'), labels_path, id: "labels-index"%></li>
-          <li><%= link_to t('navigation.New Label'), new_label_path, id: "new-label"%></li>
-          <li><%= link_to t('navigation.Profile'), user_path(current_user.id), id: "account-setting" %></li>
-          <li><%= link_to t('navigation.Logout'), session_path(current_user.id), method: :delete, id: "sign-out" %></li>
-        </ul>
-      <% end %>
-    <% else %>
-      <ul>
-        <li><%= link_to t('navigation.Sign up'), new_user_path, id: "sign-up" %></li>
-        <li><%= link_to t('navigation.Login'), new_session_path, id: "sign-in" %></li>
-      </ul>
-    <% end %>
-    <% flash.each do |key, value| %>
-      <%= content_tag(:div, value, class: "#{key}") %>
-    <% end %>
-    
-    <%= yield %>
+    <header>
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">Task App</a>
+        <% if logged_in? %>
+          <% if current_user.admin? %>
+            <div class="d-flex justify-content-end column-gap-3">
+              <%= link_to t('navigation.Users Index'), admin_users_path, id: "users-index", class: "text-decoration-none text-secondary mr-3" %>
+              <%= link_to t('navigation.New User'), new_admin_user_path, id: "add-user", class: "text-decoration-none text-secondary mr-3" %>
+              <%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index", class: "text-decoration-none text-secondary mr-3" %>
+              <%= link_to t('navigation.New Task'), new_task_path, id: "new-task", class: "text-decoration-none text-secondary mr-3" %>
+              <%= link_to t('navigation.Labels Index'), labels_path, id: "labels-index", class: "text-decoration-none text-secondary mr-3" %>
+              <%= link_to t('navigation.New Label'), new_label_path, id: "new-label", class: "text-decoration-none text-secondary mr-3" %>
+              <%= link_to t('navigation.Profile'), user_path(current_user.id), id: "account-setting", class: "text-decoration-none text-secondary mr-3" %>
+              <%= link_to t('navigation.Logout'), session_path(current_user.id), method: :delete, id: "sign-out", class: "text-decoration-none text-secondary" %>
+            </div>
+          <% else %>
+            <div class="d-flex justify-content-end column-gap-3">
+              <%= link_to t('navigation.Tasks Index'), tasks_path, id: "tasks-index", class: "text-decoration-none text-secondary mr-3" %>
+              <%= link_to t('navigation.New Task'), new_task_path, id: "new-task", class: "text-decoration-none text-secondary mr-3" %>
+              <%= link_to t('navigation.Labels Index'), labels_path, id: "labels-index", class: "text-decoration-none text-secondary mr-3"%>
+              <%= link_to t('navigation.New Label'), new_label_path, id: "new-label", class: "text-decoration-none text-secondary mr-3"%>
+              <%= link_to t('navigation.Profile'), user_path(current_user.id), id: "account-setting", class: "text-decoration-none text-secondary mr-3" %>
+              <%= link_to t('navigation.Logout'), session_path(current_user.id), method: :delete, id: "sign-out", class: "text-decoration-none text-secondary" %>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="d-flex justify-content-end column-gap-3">
+            <%= link_to t('navigation.Sign up'), new_user_path, id: "sign-up", class: "text-decoration-none text-secondary mr-3" %>
+            <%= link_to t('navigation.Login'), new_session_path, id: "sign-in", class: "text-decoration-none text-secondary" %>
+          </div>
+        <% end %>
+        </nav>
+    </header>
+        <% flash.each do |key, value| %>
+          <%= content_tag(:div, value, class: "alert alert-#{key}") %>
+        <% end %>
+    <div class='container mt-5'>
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+          <%= yield %>
+        </div>
+        <div class="col-2"></div>
+      </div>
+    </div>
   </body>
 </html>

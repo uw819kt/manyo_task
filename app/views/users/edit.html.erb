@@ -2,15 +2,30 @@
 <%= render 'users/error_messages' %>
 
 <%= form_with(model: @user, local: true) do |f| %>
-  <%= f.label :"名前" %>
-  <%= f.text_field :name %>
-  <%= f.label :"メールアドレス" %>
-  <%= f.email_field :email %>
-  <%= f.label :"パスワード" %>
-  <%= f.password_field :password %>
-  <%= f.label :"パスワード（確認）" %>
-  <%= f.password_field :password_confirmation %>
-  <%= f.submit "更新する", id: "update-user" %>
-<% end %>
+  <div class="form-row">
+    <div class="form-group col-12">
+      <%= f.label :"名前" %>
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
 
+    <div class="form-group col-12">
+      <%= f.label :"メールアドレス" %>
+      <%= f.email_field :email, class: "form-control" %>
+    </div>
+  
+    <div class="form-group col-12">
+      <%= f.label :"パスワード" %>
+      <%= f.password_field :password, class: "form-control" %>
+    </div>
+  
+    <div class="form-group col-12">
+      <%= f.label :"パスワード（確認）" %>
+      <%= f.password_field :password_confirmation, class: "form-control" %>
+    </div>
+  
+    <div class="form-group col-12 d-flex justify-content-end mt-3">
+      <%= f.submit "更新する", id: "update-user", class: "btn btn-primary" %>
+    </div> 
+  </div>
+<% end %>
 <%= link_to "戻る", user_path(current_user.id), id: "back" %>

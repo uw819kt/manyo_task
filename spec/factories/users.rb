@@ -5,10 +5,6 @@ FactoryBot.define do
     password { "password" }
     password_confirmation { "password" }
     admin { false }
-    
-    after(:create) do |user|
-      create(:task, user: user)
-    end
   end
 
   factory :second_user, class: User do

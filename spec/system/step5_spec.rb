@@ -137,15 +137,16 @@ RSpec.describe 'step5', type: :system do
           expect(page).to have_button '更新する'
           expect(page).to have_link '戻る'
         end
-        it 'タスク登録画面' do # チェックボックスが複数見つかり絞り込めない→インデックス指定なら通る(find_all/[0])
+        it 'タスク登録画面' do 
           visit new_task_path
           sleep 0.5
+          binding.irb
           expect(page).to have_selector 'label', text: 'ラベル'
           expect(find('input[type="checkbox"]')).to be_visible
           expect(page).to have_button '登録する'
           expect(page).to have_link '戻る'
         end
-        it 'タスク編集画面' do # チェックボックスが複数見つかり絞り込めない→インデックス指定なら通る(find_all/[0])
+        it 'タスク編集画面' do 
           visit edit_task_path(task_created_by_user)
           sleep 0.5
           expect(page).to have_selector 'label', text: 'ラベル'
@@ -220,13 +221,13 @@ RSpec.describe 'step5', type: :system do
         click_button 'ログイン'
         sleep 0.5
       end
-      it 'タスク登録画面' do # チェックボックスが複数見つかり絞り込めない→インデックス指定なら通る(find_all/[0])
+      it 'タスク登録画面' do 
         visit new_task_path
         sleep 0.5
         expect(page).to have_selector 'label', text: 'ラベル'
         expect(find('input[type="checkbox"]')).to be_visible
       end
-      it 'タスク編集画面' do # チェックボックスが複数見つかり絞り込めない→インデックス指定なら通る(find_all/[0])
+      it 'タスク編集画面' do 
         visit edit_task_path(task_created_by_user)
         sleep 0.5
         expect(page).to have_selector 'label', text: 'ラベル'

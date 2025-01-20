@@ -137,7 +137,7 @@ RSpec.describe 'step5', type: :system do
           expect(page).to have_button '更新する'
           expect(page).to have_link '戻る'
         end
-        it 'タスク登録画面' do
+        it 'タスク登録画面' do # チェックボックスが複数見つかり絞り込めない→インデックス指定なら通る(find_all/[0])
           visit new_task_path
           sleep 0.5
           expect(page).to have_selector 'label', text: 'ラベル'
@@ -145,7 +145,7 @@ RSpec.describe 'step5', type: :system do
           expect(page).to have_button '登録する'
           expect(page).to have_link '戻る'
         end
-        it 'タスク編集画面' do
+        it 'タスク編集画面' do # チェックボックスが複数見つかり絞り込めない→インデックス指定なら通る(find_all/[0])
           visit edit_task_path(task_created_by_user)
           sleep 0.5
           expect(page).to have_selector 'label', text: 'ラベル'
@@ -220,13 +220,13 @@ RSpec.describe 'step5', type: :system do
         click_button 'ログイン'
         sleep 0.5
       end
-      it 'タスク登録画面' do
+      it 'タスク登録画面' do # チェックボックスが複数見つかり絞り込めない→インデックス指定なら通る(find_all/[0])
         visit new_task_path
         sleep 0.5
         expect(page).to have_selector 'label', text: 'ラベル'
         expect(find('input[type="checkbox"]')).to be_visible
       end
-      it 'タスク編集画面' do
+      it 'タスク編集画面' do # チェックボックスが複数見つかり絞り込めない→インデックス指定なら通る(find_all/[0])
         visit edit_task_path(task_created_by_user)
         sleep 0.5
         expect(page).to have_selector 'label', text: 'ラベル'
@@ -611,7 +611,7 @@ RSpec.describe 'step5', type: :system do
     end
 
     describe '17.ラベルを1つ指定し検索することで、そのラベルが貼られたタスクのみ表示させること' do
-      before do
+      before do # name="search[labels_id]"に変更すれば機能する
         visit new_session_path
         sleep 0.5
         find('input[name="session[email]"]').set(user.email)
@@ -627,7 +627,7 @@ RSpec.describe 'step5', type: :system do
         end
         visit tasks_path
         sleep 0.5
-        find('select[name="search[label]"]').find("option[value='#{label_created_by_user.id}']").select_option
+        find('select[name="search[labels]"]').find("option[value='#{label_created_by_user.id}']").select_option
         click_button '検索'
         sleep 0.5
         expect(page).to have_content 'task_title_7'

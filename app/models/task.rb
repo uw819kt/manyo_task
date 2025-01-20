@@ -25,6 +25,7 @@ class Task < ApplicationRecord
   scope :search_label, ->(status) { where(label: label) } # ラベルで検索
   scope :search_title_and_status, ->(title, status) { search_title(title).search_status(status) } # タイトルとステータスで検索
   #  scope :スコープの名前, -> (引数){ 条件式 } 
+  accepts_nested_attributes_for :task_labels, allow_destroy: true
 end
 
 

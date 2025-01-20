@@ -48,11 +48,12 @@ class TasksController < ApplicationController
   # GET /tasks/new
   def new
     @task = Task.new
+    @labels = current_user.labels
   end
 
   # GET /tasks/1/edit
   def edit
-    @labels = Label.all # 全てのラベルを取得
+    @labels = current_user.labels
   end
 
   # POST /tasks or /tasks.json

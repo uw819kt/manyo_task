@@ -38,7 +38,7 @@ ja:
         deadline_on: 終了期限
         priority: 優先度
         status: ステータス
-        label: ラベル
+        label_ids: ラベル
       user:
         name: 名前
         email: メールアドレス

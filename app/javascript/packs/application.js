@@ -10,6 +10,7 @@ require("channels")
 require("jquery")
 
 import 'bootstrap';
+import 'jquery'
 import '@popperjs/core'; //この記述追加でボタン動いた
 import '../stylesheets/application';
 import '../stylesheets/deco';

@@ -33,7 +33,6 @@ class LabelsController < ApplicationController
       flash[:success] = 'ラベルを更新しました'
       redirect_to labels_path #ユーザの詳細ページ(show)へ
     else
-      flash[:alert] = @labels.errors.full_messages.to_sentence
       render :edit
       #失敗の処理はrenderでないとバリデーション×、編集画面出力、
     end
@@ -44,7 +43,7 @@ class LabelsController < ApplicationController
     if @labels.destroy
       flash[:success] = 'ラベルを削除しました'
     else
-      flash[:alert] = @labels.errors.full_messages.to_sentence
+      flash[:danger] = @labels.errors.full_messages.to_sentence
       # モデルのエラーメッセージをフラッシュに設定
     end
     redirect_to labels_path

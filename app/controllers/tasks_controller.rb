@@ -53,7 +53,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
-    @labels = current_user.labels
+    @labels = Label.all # 全てのラベルを取得
   end
 
   # POST /tasks or /tasks.json
@@ -75,7 +75,7 @@ class TasksController < ApplicationController
       redirect_to task_path(@task)
     else
       @labels = Label.all
-      flash[:danger] = "Title can't be blank."
+      flash[:danger] = "入力してください"
       render :edit
     end
   end
@@ -86,7 +86,7 @@ class TasksController < ApplicationController
     @task.destroy
 
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: "タスクを削除しました" }
+      format.html { redirect_to tasks_url, success: "タスクを削除しました" }
       format.json { head :no_content }
     end
   end
@@ -111,7 +111,7 @@ class TasksController < ApplicationController
   def check_task_owner #他人のタスクにアクセスできないようにする
     @task = Task.find(params[:id])
     if @task.user != current_user
-      flash[:alert] = "アクセス権限がありません"
+      flash[:danger] = "アクセス権限がありません"
       redirect_to tasks_path
     end
   end

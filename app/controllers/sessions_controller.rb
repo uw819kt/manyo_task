@@ -33,7 +33,7 @@ private
 
   def redirect_logged_in # ログイン中ログイン画面アクセスでリダイレクト
     if logged_in?
-      flash[:alert] = "ログアウトしてください"
+      flash[:danger] = "ログアウトしてください"
       redirect_to tasks_path
     end
   end 

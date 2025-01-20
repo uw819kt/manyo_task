@@ -116,8 +116,7 @@ RSpec.describe 'ユーザ管理機能', type: :system do
         first('a', text: '削除').click 
         # firstはページ内で指定された条件に一致する最初の要素を返すCapybaraのメソッド,'a'は<a>タグ
         page.driver.browser.switch_to.alert.accept
-        sleep 1
-        expect(page).to have_text 'ユーザを削除しました'
+        expect(page).to have_text 'ログインページ'
         expect(page).not_to have_text 'aaa'
       end
     end

@@ -29,7 +29,7 @@
         <td>
           <div class="d-flex justify-content-center column-gap-3">
             <%= link_to t('common.Show'), task, class: "show-task btn btn-primary", type: "button" %>
-            <%= link_to t('common.Edit'), edit_task_path(task), class: "edit-task btn btn-primary", type: "button" %>
+            <%= link_to t('common.Edit'), edit_task_path(task), class: "edit-task btn btn-primary", data: { turbolinks: false } %>
             <%= link_to t('common.Destroy'), task, method: :delete, data: { confirm: t('common.Are you sure?') }, class: "destroy-task btn btn-danger", type: "button" %>
           </div>
         </td>

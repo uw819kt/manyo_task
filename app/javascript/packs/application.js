@@ -13,7 +13,6 @@ import 'bootstrap';
 import 'jquery'
 import '@popperjs/core'; //この記述追加でボタン動いた
 import '../stylesheets/application';
-import '../stylesheets/deco';
 
 
 // Uncomment to copy all static images under ../images to the output folder and reference

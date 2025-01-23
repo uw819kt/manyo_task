@@ -1,7 +1,7 @@
 
 <h1><%= t('index.Users Index Page') %></h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th><%= "名前" %></th>
@@ -20,9 +20,13 @@
         <td><%= user.admin ? 'あり' : 'なし' %></td>
         <td><%= user.tasks.size %></td>
 
-        <td><%= link_to t('common.Show'), admin_user_path(user), class: "show-user" %></td>
-        <td><%= link_to t('common.Edit'), edit_admin_user_path(user), class: "edit-user" %></td>
-        <td><%= link_to t('common.Destroy'), admin_user_path(user), method: :delete, data: { confirm: t('common.Are you sure?') }, class: "destroy-user" %></td>
+        <td>
+          <div class="d-flex justify-content-center column-gap-3">
+            <%= link_to t('common.Show'), admin_user_path(user), class: "show-user btn btn-primary" %>
+            <%= link_to t('common.Edit'), edit_admin_user_path(user), class: "edit-user btn btn-primary" %>
+            <%= link_to t('common.Destroy'), admin_user_path(user), method: :delete, data: { confirm: t('common.Are you sure?') }, class: "destroy-user btn btn-danger" %>
+          </div>  
+        </td>
       </tr>
     <% end %>
   </tbody>

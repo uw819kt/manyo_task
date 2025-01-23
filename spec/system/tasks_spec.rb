@@ -53,7 +53,7 @@ RSpec.describe 'タスク管理機能', type: :system do
           # allメソッドを使って複数のテストデータの並び順を確認する
           click_link "優先度"
           sleep 1
-          priority = ["高", "中", "中", "低"]
+          priority = ["高", "中", "低"]
           page.all('tbody tr').each_with_index do |tr, idx|
             expect(tr.all("td")[4].text).to eq priority[idx]
           end
@@ -72,6 +72,13 @@ RSpec.describe 'タスク管理機能', type: :system do
     let!(:first_task) { FactoryBot.create(:task, title: 'first_task_title', deadline_on: Date.new(2022, 2, 18), priority: '中', user: user) }
     let!(:second_task) { FactoryBot.create(:second_task, title: "second_task_title", deadline_on: Date.new(2022, 2, 17), priority: '高', user: user) }
     let!(:third_task) { FactoryBot.create(:third_task, title: "third_task_title", deadline_on: Date.new(2022, 2, 16), priority: '低', user: user) }
+    let!(:label) { FactoryBot.create(:label, user: user) }
+    let!(:second_label) { FactoryBot.create(:second_label, user: user) }
+
+    before do
+      first_task.labels << label
+    end
+
     context 'タイトルであいまい検索をした場合' do
       it "検索ワードを含むタスクのみ表示される" do
         # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
@@ -101,10 +108,24 @@ RSpec.describe 'タスク管理機能', type: :system do
         expect(all("tr")[1].text).not_to have_text "完了"
       end
     end
+    context 'ラベルで検索をした場合' do
+      it "そのラベルの付いたタスクがすべて表示される" do
+        # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
+        click_link "タスク一覧"
+        sleep 0.5
+        select 'label_test', from: 'search_label'
+        click_button "検索"
+        expect(page).to have_text "first_task_title"
+        expect(page).not_to have_text "second_task_title"
+      end
+    end
   end
   
     context '一覧画面に遷移した場合' do
       let!(:user) { FactoryBot.create(:user) }
+      let!(:first_task) { FactoryBot.create(:task, title: 'first_task_title', deadline_on: Date.new(2022, 2, 18), priority: '中', user: user) }
+      let!(:second_task) { FactoryBot.create(:second_task, title: "second_task_title", deadline_on: Date.new(2022, 2, 17), priority: '高', user: user) }
+      let!(:third_task) { FactoryBot.create(:third_task, title: "third_task_title", deadline_on: Date.new(2022, 2, 16), priority: '低', user: user) }
       before do
         visit new_session_path
         fill_in 'メールアドレス', with: 'abc@example.com'
@@ -112,13 +133,17 @@ RSpec.describe 'タスク管理機能', type: :system do
         click_button 'ログイン'
       end
       it '作成済みのタスク一覧が作成日時の降順で表示される' do
-        expect(page).to have_content 'task'
+        click_link "タスク一覧"
+        expect(page).to have_content 'first_task_title'
         # visit（遷移）したpage（この場合、タスク一覧画面）に"書類作成"という文字列が、have_content（含まれていること）をexpect（確認・期待）する
         # expectの結果が「真」であれば成功、「偽」であれば失敗としてテスト結果が出力される
       end
     end
     context '新たにタスクを作成した場合' do
       let!(:user) { FactoryBot.create(:user) }
+      let!(:first_task) { FactoryBot.create(:task, title: 'first_task_title', deadline_on: Date.new(2022, 2, 18), priority: '中', user: user) }
+      let!(:second_task) { FactoryBot.create(:second_task, title: "second_task_title", deadline_on: Date.new(2022, 2, 17), priority: '高', user: user) }
+      let!(:third_task) { FactoryBot.create(:third_task, title: "third_task_title", deadline_on: Date.new(2022, 2, 16), priority: '低', user: user) }
       before do
         visit new_session_path
         fill_in 'メールアドレス', with: 'abc@example.com'
@@ -126,7 +151,7 @@ RSpec.describe 'タスク管理機能', type: :system do
         click_button 'ログイン'
       end
       it '新しいタスクが一番上に表示される' do
-        expect(page).to have_content 'task'
+        expect(page).to have_content 'third_task_title'
       end
     end
   end

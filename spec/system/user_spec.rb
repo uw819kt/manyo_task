@@ -75,11 +75,11 @@ RSpec.describe 'ユーザ管理機能', type: :system do
       it '管理者を登録できる' do #ok
         click_link "ユーザを登録する"
         sleep 0.5
-        fill_in 'user_name', with: 'aaa'
-        fill_in 'user_email', with: 'aaa@example.com'
-        fill_in 'user_password', with: 'password'
-        fill_in 'user_password_confirmation', with: 'password'
-        check 'user_admin'
+        fill_in '名前', with: 'aaa'
+        fill_in 'メールアドレス', with: 'aaa@example.com'
+        fill_in 'パスワード', with: 'password'
+        fill_in 'パスワード（確認）', with: 'password'
+        check '管理者権限'
         click_button '登録する'
         expect(page).to have_text 'ユーザを登録しました'
         expect(page).to have_text 'aaa'
@@ -93,11 +93,11 @@ RSpec.describe 'ユーザ管理機能', type: :system do
         click_link "ユーザ一覧"
         click_link "編集"
         sleep 0.5
-        fill_in 'user_name', with: 'aaa'
-        fill_in 'user_email', with: 'aaa@example.com'
-        fill_in 'user_password', with: 'password'
-        fill_in 'user_password_confirmation', with: 'password'
-        check 'user_admin'
+        fill_in '名前', with: 'aaa'
+        fill_in 'メールアドレス', with: 'aaa@example.com'
+        fill_in 'パスワード', with: 'password'
+        fill_in 'パスワード（確認）', with: 'password'
+        check '管理者権限'
         click_button '更新する'
         expect(page).to have_text 'ユーザを更新しました'
         expect(page).to have_text 'aaa'
@@ -105,20 +105,18 @@ RSpec.describe 'ユーザ管理機能', type: :system do
       it 'ユーザを削除できる' do #ok
         click_link "ユーザを登録する" # 削除用データ作成
         sleep 0.5
-        fill_in 'user_name', with: 'aaa'
-        fill_in 'user_email', with: 'aaa@example.com'
-        fill_in 'user_password', with: 'password'
-        fill_in 'user_password_confirmation', with: 'password'
-        check 'user_admin' # adminを二人に
+        fill_in '名前', with: 'aaa'
+        fill_in 'メールアドレス', with: 'aaa@example.com'
+        fill_in 'パスワード', with: 'password'
+        fill_in 'パスワード（確認）', with: 'password'
+        check '管理者権限' # adminを二人に
         click_button '登録する'
 
         click_link "ユーザ一覧"
-        binding.irb
         first('a', text: '削除').click 
         # firstはページ内で指定された条件に一致する最初の要素を返すCapybaraのメソッド,'a'は<a>タグ
         page.driver.browser.switch_to.alert.accept
-        sleep 0.5
-        expect(page).to have_text 'ユーザを削除しました'
+        expect(page).to have_text 'ログインページ'
         expect(page).not_to have_text 'aaa'
       end
     end

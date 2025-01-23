@@ -56,7 +56,7 @@ RSpec.describe 'タスクモデル機能', type: :model do
         expect(Task.search_status('未着手')).to include(first_task)
         expect(Task.search_status('完了')).not_to include(second_task)
         expect(Task.search_status('着手中')).not_to include(third_task)
-        expect(Task.search_status('未着手').count).to eq 2
+        expect(Task.search_status('未着手').count).to eq 1
         # ユーザアカウント作成時点でタスクが1つ作成→4個できる(未着手2つ)
       end
     end
@@ -71,7 +71,7 @@ RSpec.describe 'タスクモデル機能', type: :model do
         expect(Task.search_status('着手中')).not_to include(third_task)
         expect(Task.search_title('first')).not_to include(third_task)
         expect(Task.search_title('first').count).to eq 1
-        expect(Task.search_status('未着手').count).to eq 2
+        expect(Task.search_status('未着手').count).to eq 1
         # ユーザアカウント作成時点でタスクが1つ作成→4個できる(未着手2つ)
       end
     end

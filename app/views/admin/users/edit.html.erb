@@ -2,17 +2,36 @@
 <%= render 'admin/users/error_messages' %>
 
 <%= form_with model: [:admin, @user], local: true do |f| %>
-  <%= f.label :"名前" %>
-  <%= f.text_field :name %>
-  <%= f.label :"メールアドレス" %>
-  <%= f.email_field :email %>
-  <%= f.label :"パスワード" %>
-  <%= f.password_field :password %>
-  <%= f.label :"パスワード（確認）" %>
-  <%= f.password_field :password_confirmation %>
-  <%= f.label :"管理者権限" %>
-  <%= f.check_box :admin %>
-  <%= f.submit "更新する", id: "update-user" %>
+  <div class="row row-gap-3">
+    <div class="form-group col-12"> 
+      <%= f.label :name,"名前", for: "name" %>
+      <%= f.text_field :name, class: "form-control", id: "name" %>
+    </div>
+  
+    <div class="form-group col-12">
+      <%= f.label :email,"メールアドレス", for: "email" %>
+      <%= f.email_field :email, class: "form-control", id: "email" %>
+    </div>
+
+    <div class="form-group col-12">
+      <%= f.label :password,"パスワード", for: "password" %>
+      <%= f.password_field :password, class: "form-control", id: "password" %>
+    </div>
+
+    <div class="form-group col-12">
+      <%= f.label :password_confirmation,"パスワード（確認）", for: "password_confirmation" %>
+      <%= f.password_field :password_confirmation, class: "form-control", id: "password_confirmation" %>
+    </div>
+
+    <div class="form-check col-12 p-0">    
+      <%= f.label :admin, "管理者権限", for: "admin" %>
+      <%= f.check_box :admin, id: "admin" %>
+    </div>
+
+    <div class="form-group col-12 d-flex justify-content-end mt-3">
+      <%= f.submit "更新する", id: "update-user", class: "btn btn-primary" %>
+    </div>  
+  </div>
 <% end %>
 
-<%= link_to "戻る", admin_users_path, id: "back" %>
+<%= link_to "戻る", admin_users_path, id: "back", class: "d-flex justify-content-end mt-3" %>

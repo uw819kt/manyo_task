@@ -1,7 +1,7 @@
 
 <h1><%= t('index.Labels Index Page') %></h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th><%= "名前" %></th>
@@ -14,10 +14,14 @@
     <% @labels.eager_load(:tasks).each do |label| %>
       <tr>
         <td><%= label.name %></td>
-        <td><%= user.labels.count %></td>
+        <td><%= label.tasks.size %></td>
 
-        <td><%= link_to t('common.Edit'), edit_label_path(label), class: "edit-user" %></td>
-        <td><%= link_to t('common.Destroy'), label_path(label), method: :delete, data: { confirm: t('common.Are you sure?') }, class: "destroy-user" %></td>
+        <td>
+          <div class="d-flex justify-content-center column-gap-3">
+          <%= link_to t('common.Edit'), edit_label_path(label), class: "edit-user btn btn-primary" %>
+          <%= link_to t('common.Destroy'), label_path(label.id), method: :delete, data: { confirm: t('common.Are you sure?') }, class: "destroy-user btn btn-danger" %>
+        </td>
+      </div>
       </tr>
     <% end %>
   </tbody>

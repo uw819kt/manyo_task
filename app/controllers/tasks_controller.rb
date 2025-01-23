@@ -4,9 +4,12 @@ class TasksController < ApplicationController
   
   # GET /tasks or /tasks.json
   def index
-    @tasks = current_user.tasks
+    @tasks = current_user.tasks.includes(:labels, :user) # N+1問題対策で1回で2つ読み込み
+    @label = Label.find(params[:label_id]) if params[:label_id].present?
+    # パラメータからラベルIDを取得、ラベルをセット
     sort_deadline = params[:sort_deadline_on]
     sort_priority = params[:sort_priority]
+
     if sort_deadline == "true"
       @tasks = @tasks.sort_by_deadline.page(params[:page]).per(10)
       # 終了期限ソート(10件ずつ表示)
@@ -29,6 +32,11 @@ class TasksController < ApplicationController
       # パラメータにステータスのみがあった場合
         status_value = @tasks.statuses[params[:search][:status]]
         @tasks = @tasks.search_status(status_value).page(params[:page]).per(10)
+      elsif params[:search][:labels_id].present?
+      # パラメータがラベルだった場合
+        label_id = params[:search][:labels_id] # ラベルに関連するタスクを絞り込む
+        @tasks = @tasks.joins(:labels).where(labels: { id: label_id }).page(params[:page]).per(10)
+        # tasksとlabelsテーブルをJOIN、指定されたlabel_idを持つタスクだけ取得
       end
     end
   end
@@ -40,17 +48,19 @@ class TasksController < ApplicationController
   # GET /tasks/new
   def new
     @task = Task.new
+    @labels = current_user.labels
   end
 
   # GET /tasks/1/edit
   def edit
+    @labels = Label.all # 全てのラベルを取得
   end
 
   # POST /tasks or /tasks.json
   def create
     @task = current_user.tasks.build(task_params)
     if @task.save
-      flash[:notice] = "タスクを登録しました"
+      flash[:success] = "タスクを登録しました"
       redirect_to tasks_path
     else
       render :new
@@ -61,10 +71,11 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
     if @task.update(task_params)
-      flash[:notice] = "タスクを更新しました"
+      flash[:success] = "タスクを更新しました"
       redirect_to task_path(@task)
     else
-      flash[:notice] = "Title can't be blank."
+      @labels = Label.all
+      flash[:danger] = "入力してください"
       render :edit
     end
   end
@@ -75,7 +86,7 @@ class TasksController < ApplicationController
     @task.destroy
 
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: "タスクを削除しました" }
+      format.html { redirect_to tasks_url, success: "タスクを削除しました" }
       format.json { head :no_content }
     end
   end
@@ -88,11 +99,11 @@ class TasksController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def task_params
-    params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
+    params.require(:task).permit(:title, :content, :deadline_on, :priority, :status, label_ids: [])
   end
 
   def task_search_params #params[:search]を処理、検索条件として利用できるパラメータを返す
-    params.fetch(:search, {}).permit(:status, :title)
+    params.fetch(:search, {}).permit(:status, :title, :label)
     # params.fetch(:search, {})→paramsハッシュの中から:searchキーの値を取得
     # params[:search]が空の時{}を返し、params[:search]が空でない場合、params[:search]を返す
   end
@@ -100,7 +111,7 @@ class TasksController < ApplicationController
   def check_task_owner #他人のタスクにアクセスできないようにする
     @task = Task.find(params[:id])
     if @task.user != current_user
-      flash[:alert] = "アクセス権限がありません"
+      flash[:danger] = "アクセス権限がありません"
       redirect_to tasks_path
     end
   end

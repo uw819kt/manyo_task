@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :tasks, dependent: :destroy 
-  # has_many :labels
+  has_many :labels
+  
   # dependent: :destroy→親オブジェクトが削除される際に、関連する子オブジェクトも自動的に削除する
   
   validates :name, presence: true, length: { maximum: 30 }

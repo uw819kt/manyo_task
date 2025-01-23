@@ -15,7 +15,7 @@ class Admin::UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      flash[:notice] = 'ユーザを登録しました'
+      flash[:success] = 'ユーザを登録しました'
       redirect_to admin_users_path
       # 成功した場合
     else
@@ -37,7 +37,7 @@ class Admin::UsersController < ApplicationController
   def update
     @user = User.find(params[:id]) #データ取得
     if @user.update(user_params)
-      flash[:notice] = 'ユーザを更新しました'
+      flash[:success] = 'ユーザを更新しました'
       redirect_to admin_users_path #ユーザの詳細ページ(show)へ
     else
       flash[:alert] = @user.errors.full_messages.to_sentence
@@ -49,9 +49,9 @@ class Admin::UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     if @user.destroy
-      flash[:notice] = 'ユーザを削除しました'
+      flash[:success] = 'ユーザを削除しました'
     else
-      flash[:alert] = @user.errors.full_messages.to_sentence
+      flash[:danger] = @user.errors.full_messages.to_sentence
       # モデルのエラーメッセージをフラッシュに設定
     end
     redirect_to admin_users_path
@@ -65,7 +65,7 @@ class Admin::UsersController < ApplicationController
 
   def admin_required
     unless current_user.admin?
-      flash[:alert] = "管理者以外アクセスできません"
+      flash[:danger] = "管理者以外アクセスできません"
       redirect_to tasks_path
     end
   end
